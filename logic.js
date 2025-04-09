@@ -1,7 +1,7 @@
 document.getElementById("trussForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const size = document.getElementById("size").value.trim();
+  const size = document.getElementById("size").value.trim().toLowerCase();
   const connection = document.getElementById("connection").value;
   const design = document.getElementById("design").value;
   const powder = document.getElementById("powder").value;
@@ -10,8 +10,10 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
   output.textContent = calculateTrussTime(size, connection, design, powder);
 });
 
-function calculateTrussTime(size, connection, design, powder) {
-  const sizeMatch = size.match(/(\d+)(m)?$/i);
+function calculateTrussTime(sizeInput, connection, design, powder) {
+  const isCircle = sizeInput.includes("circle");
+
+  const sizeMatch = sizeInput.match(/(\d+)(m)?$/i);
   if (!sizeMatch) return "❌ Invalid truss size format.";
 
   const isMetric = sizeMatch[2];
@@ -44,7 +46,6 @@ function calculateTrussTime(size, connection, design, powder) {
     }
   }
 
-  // Interpolation
   let data;
   if (lower === upper) {
     data = minutes[lower];
@@ -98,12 +99,23 @@ function calculateTrussTime(size, connection, design, powder) {
   const finalizeTime = 12.5;
   notes.push(`Finalize Time: ${finalizeTime} min`);
 
-  const total = fabricationTime + forkendTime + finalizeTime + powderTime;
+  let circleTime = 0;
+  if (isCircle) {
+    circleTime += 60 + 32 + 24 + 4; // weld + rolling + cutting + deburring
+    notes.push(`Circle Fabrication Weld: 60 min`);
+    notes.push(`Tube Rolling (4): 32 min`);
+    notes.push(`Tube Cutting (4): 24 min`);
+    notes.push(`Tube Deburring (4): 4 min`);
+  }
 
-  return `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n\n` +
+  const total = fabricationTime + forkendTime + finalizeTime + powderTime + circleTime;
+
+  return `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
+         (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
          `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
          (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
          `Finalize Time: ${finalizeTime} min\n` +
+         (circleTime ? `Circle Extras: ${circleTime} min\n` : "") +
          (powderTime ? `Powder Coating Time: ${powderTime} min\n` : "") +
          (powderWeight ? `Powder Weight: ${powderWeight} lbs\n` : "") +
          `\nTotal Time: ${total.toFixed(2)} min\n\nDetails:\n` + notes.join("\n");
