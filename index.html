@@ -7,37 +7,52 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <header>
+    <img src="TylerTruss_ICONONLY.png" alt="Tyler Truss Logo" class="logo" />
     <h1>Truss Time Estimator</h1>
-    <form id="trussForm">
-      <label>Truss Size: <input type="text" id="size" placeholder="e.g. 12x12x96" required></label>
+  </header>
 
-      <label>Connection Type:
+  <main class="card">
+    <form id="trussForm">
+      <div class="form-group">
+        <label for="size">Truss Size:</label>
+        <input type="text" id="size" placeholder="e.g. 12x12x138&quot; circle 8 sections" required>
+      </div>
+
+      <div class="form-group">
+        <label for="connection">Connection Type:</label>
         <select id="connection">
           <option value="forkended">Forkended</option>
           <option value="bolting">Bolting</option>
         </select>
-      </label>
+      </div>
 
-      <label>Design Type:
+      <div class="form-group">
+        <label for="design">Design Type:</label>
         <select id="design">
           <option value="standard">Standard</option>
           <option value="custom">Custom</option>
         </select>
-      </label>
+      </div>
 
-      <label>Powder Coated:
+      <div class="form-group">
+        <label for="powder">Powder Coated:</label>
         <select id="powder">
           <option value="no">No</option>
           <option value="yes">Yes</option>
         </select>
-      </label>
+      </div>
 
-      <button type="submit">Calculate</button>
+      <button type="submit">🔧 Calculate</button>
     </form>
 
     <pre id="output"></pre>
-  </div>
+  </main>
+
+  <footer>
+    <p>© Tyler Truss Systems</p>
+  </footer>
+
   <script src="logic.js"></script>
 </body>
 </html>
