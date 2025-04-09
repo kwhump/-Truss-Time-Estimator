@@ -13,8 +13,12 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
 function calculateTrussTime(sizeInput, connection, design, powder) {
   const isCircle = sizeInput.includes("circle");
 
-  const sizeMatch = sizeInput.match(/(\d+)(m)?$/i);
-  if (!sizeMatch) return "❌ Invalid truss size format.";
+  // Strip out quotes, ft, in, and symbols – only keep the last number
+  const cleaned = sizeInput.replace(/[^0-9m\s]/gi, '').trim();
+  const sizeParts = cleaned.split(/\s+/);
+  const sizeStr = sizeParts[sizeParts.length - 1];
+  const sizeMatch = sizeStr.match(/(\d+)(m)?$/i);
+  if (!sizeMatch) return `❌ Could not parse a size from: "${sizeInput}"`;
 
   const isMetric = sizeMatch[2];
   const inputSize = isMetric ? parseFloat(sizeMatch[1]) : parseInt(sizeMatch[1]);
@@ -101,7 +105,7 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
 
   let circleTime = 0;
   if (isCircle) {
-    circleTime += 60 + 32 + 24 + 4; // weld + rolling + cutting + deburring
+    circleTime = 60 + 32 + 24 + 4;
     notes.push(`Circle Fabrication Weld: 60 min`);
     notes.push(`Tube Rolling (4): 32 min`);
     notes.push(`Tube Cutting (4): 24 min`);
