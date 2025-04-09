@@ -95,3 +95,4 @@ function calculateTrussTime(size, connection, design, powder) {
          (powderWeight ? `Powder Weight: ${powderWeight} lbs\n` : "") +
          `\nTotal Time: ${total.toFixed(2)} min\n\nDetails:\n` + notes.join("\n");
 }
+
