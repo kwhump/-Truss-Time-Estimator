@@ -1,27 +1,24 @@
 document.getElementById("trussForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const size = document.getElementById("size").value.trim().toLowerCase();
+  const sizeInput = document.getElementById("size").value.trim().toLowerCase();
   const connection = document.getElementById("connection").value;
   const design = document.getElementById("design").value;
   const powder = document.getElementById("powder").value;
 
   const output = document.getElementById("output");
-  output.textContent = calculateTrussTime(size, connection, design, powder);
+  output.textContent = calculateTrussTime(sizeInput, connection, design, powder);
 });
 
 function calculateTrussTime(sizeInput, connection, design, powder) {
   const isCircle = sizeInput.includes("circle");
 
-  // Strip out quotes, ft, in, and symbols – only keep the last number
-  const cleaned = sizeInput.replace(/[^0-9m\s]/gi, '').trim();
-  const sizeParts = cleaned.split(/\s+/);
-  const sizeStr = sizeParts[sizeParts.length - 1];
-  const sizeMatch = sizeStr.match(/(\d+)(m)?$/i);
-  if (!sizeMatch) return `❌ Could not parse a size from: "${sizeInput}"`;
-
-  const isMetric = sizeMatch[2];
-  const inputSize = isMetric ? parseFloat(sizeMatch[1]) : parseInt(sizeMatch[1]);
+  // Extract last number from input (e.g., 12x12x138" circle → 138)
+  const allNumbers = sizeInput.match(/\d+/g);
+  if (!allNumbers || allNumbers.length === 0) {
+    return `❌ Couldn't find a valid number in: "${sizeInput}"`;
+  }
+  const inputSize = parseInt(allNumbers[allNumbers.length - 1]);
 
   const minutes = {
     144: { box: 84, back: 75, gusset: 110, ladder: 40, backLadder: 27, powder: 0, weight: 0 },
@@ -35,7 +32,6 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
   };
 
   const sizes = Object.keys(minutes).map(Number).sort((a, b) => a - b);
-
   let lower = sizes[0];
   let upper = sizes[sizes.length - 1];
 
