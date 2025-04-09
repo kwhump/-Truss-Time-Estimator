@@ -18,36 +18,39 @@ function calculateTrussTime(size, connection, design, powder) {
   const inputSize = isMetric ? parseFloat(sizeMatch[1]) : parseInt(sizeMatch[1]);
 
   const minutes = {
-    "144": { box: 84, back: 75, gusset: 110, ladder: 40, backLadder: 27, powder: 0, weight: 0 },
-    "120": { box: 74, back: 68, gusset: 101, ladder: 38, backLadder: 25, powder: 16, weight: 2.5 },
-    "96":  { box: 64, back: 62, gusset: 91, ladder: 36, backLadder: 24, powder: 16, weight: 2.21 },
-    "72":  { box: 62, back: 56, gusset: 88, ladder: 32, backLadder: 21, powder: 16, weight: 1.92 },
-    "60":  { box: 60, back: 43, gusset: 87, ladder: 29, backLadder: 19, powder: 16, weight: 1.63 },
-    "48":  { box: 52, back: 34, gusset: 80, ladder: 24, backLadder: 15, powder: 8, weight: 1.34 },
-    "36":  { box: 50, back: 32, gusset: 76, ladder: 20, backLadder: 13, powder: 5.3, weight: 1.05 },
-    "24":  { box: 45, back: 28, gusset: 72, ladder: 18, backLadder: 11, powder: 5.3, weight: 0.76 }
+    144: { box: 84, back: 75, gusset: 110, ladder: 40, backLadder: 27, powder: 0, weight: 0 },
+    120: { box: 74, back: 68, gusset: 101, ladder: 38, backLadder: 25, powder: 16, weight: 2.5 },
+    96:  { box: 64, back: 62, gusset: 91, ladder: 36, backLadder: 24, powder: 16, weight: 2.21 },
+    72:  { box: 62, back: 56, gusset: 88, ladder: 32, backLadder: 21, powder: 16, weight: 1.92 },
+    60:  { box: 60, back: 43, gusset: 87, ladder: 29, backLadder: 19, powder: 16, weight: 1.63 },
+    48:  { box: 52, back: 34, gusset: 80, ladder: 24, backLadder: 15, powder: 8, weight: 1.34 },
+    36:  { box: 50, back: 32, gusset: 76, ladder: 20, backLadder: 13, powder: 5.3, weight: 1.05 },
+    24:  { box: 45, back: 28, gusset: 72, ladder: 18, backLadder: 11, powder: 5.3, weight: 0.76 }
   };
 
-  const availableSizes = Object.keys(minutes).map(Number).sort((a, b) => a - b);
+  const sizes = Object.keys(minutes).map(Number).sort((a, b) => a - b);
 
-  let lower, upper;
-  for (let i = 0; i < availableSizes.length; i++) {
-    if (availableSizes[i] === inputSize) {
-      lower = upper = availableSizes[i];
+  let lower = sizes[0];
+  let upper = sizes[sizes.length - 1];
+
+  for (let i = 0; i < sizes.length; i++) {
+    if (sizes[i] === inputSize) {
+      lower = upper = sizes[i];
       break;
-    } else if (availableSizes[i] > inputSize) {
-      upper = availableSizes[i];
-      lower = availableSizes[i - 1] || upper;
+    } else if (sizes[i] > inputSize) {
+      upper = sizes[i];
+      lower = sizes[i - 1] ?? sizes[i];
       break;
     }
   }
-  if (!lower) lower = upper = availableSizes[availableSizes.length - 1];
 
+  // Interpolation
   let data;
   if (lower === upper) {
     data = minutes[lower];
   } else {
-    const l = minutes[lower], u = minutes[upper];
+    const l = minutes[lower];
+    const u = minutes[upper];
     const ratio = (inputSize - lower) / (upper - lower);
     data = {};
     for (let key of Object.keys(l)) {
@@ -57,6 +60,7 @@ function calculateTrussTime(size, connection, design, powder) {
 
   let fabricationTime = 0;
   let notes = [];
+
   if (design === "custom") {
     fabricationTime += data.gusset + (data.ladder * 2) + (data.backLadder * 2);
     notes.push(`Box Back Weld With Gussets: ${data.gusset} min`);
