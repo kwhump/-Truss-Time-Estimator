@@ -13,12 +13,18 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
 function calculateTrussTime(sizeInput, connection, design, powder) {
   const isCircle = sizeInput.includes("circle");
 
-  // Extract last number from input (e.g., 12x12x138" circle → 138)
-  const allNumbers = sizeInput.match(/\d+/g);
-  if (!allNumbers || allNumbers.length === 0) {
-    return `❌ Couldn't find a valid number in: "${sizeInput}"`;
+  // Try to extract the last number before "circle" or at the end of size
+  let cleanInput = sizeInput.split("circle")[0]; // trim after 'circle'
+  let sizeMatch = cleanInput.match(/(\d+)(m)?[^x\d]*$/i); // match number at the end
+  if (!sizeMatch) {
+    const fallbackMatch = cleanInput.match(/\d+/g);
+    if (!fallbackMatch) {
+      return `❌ Could not find a valid size in: "${sizeInput}"`;
+    }
+    sizeMatch = [null, fallbackMatch[fallbackMatch.length - 1], null];
   }
-  const inputSize = parseInt(allNumbers[allNumbers.length - 1]);
+
+  const inputSize = parseInt(sizeMatch[1]);
 
   const minutes = {
     144: { box: 84, back: 75, gusset: 110, ladder: 40, backLadder: 27, powder: 0, weight: 0 },
