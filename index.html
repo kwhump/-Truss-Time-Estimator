@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Truss Time Estimator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Truss Time Estimator</h1>
+    <form id="trussForm">
+      <label>Truss Size: <input type="text" id="size" placeholder="e.g. 12x12x96" required></label>
+
+      <label>Connection Type:
+        <select id="connection">
+          <option value="forkended">Forkended</option>
+          <option value="bolting">Bolting</option>
+        </select>
+      </label>
+
+      <label>Design Type:
+        <select id="design">
+          <option value="standard">Standard</option>
+          <option value="custom">Custom</option>
+        </select>
+      </label>
+
+      <label>Powder Coated:
+        <select id="powder">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </label>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    <pre id="output"></pre>
+  </div>
+  <script src="logic.js"></script>
+</body>
+</html>
