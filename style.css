@@ -77,6 +77,42 @@ pre {
   white-space: pre-wrap;
 }
 
+/* Instructions Help */
+.instructions-toggle {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+.instructions-toggle button {
+  background: none;
+  border: none;
+  color: #00549f;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease-in-out;
+}
+.instructions-toggle button:hover {
+  color: #003f7d;
+}
+.instructions {
+  background: #e8f0fe;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #00549f;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.instructions h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #003f7d;
+}
+.instructions ul {
+  margin-left: 1rem;
+  list-style: disc;
+}
+
 /* Footer */
 footer {
   text-align: center;
