@@ -129,8 +129,8 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
   return (
     `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
     (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
-    (powderWarning ? powderWarning + "\n\n" : "") +
-    (circlePowderNotice ? circlePowderNotice + "\n\n" : "") +
+    (powderWarning ? `<strong class="notice">${powderWarning}</strong>\n\n` : "") +
+(circlePowderNotice ? `<strong class="notice">${circlePowderNotice}</strong>\n\n` : "") +
     `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
     (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
     `Finalize Time: ${finalizeTime} min\n` +
