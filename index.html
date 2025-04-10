@@ -13,10 +13,25 @@
   </header>
 
   <main class="card">
+
+    <div class="instructions-toggle">
+      <button type="button" onclick="toggleInstructions()">❓ How to Use</button>
+      <div id="instructions" class="instructions" style="display: none;">
+        <h2>How to Use This Estimator</h2>
+        <ul>
+          <li>Enter the truss size (e.g. <code>12x12x120</code>)</li>
+          <li>If estimating a circle truss, enter the total arch length as the size (e.g. <code>12x12x118 circle</code>)</li>
+          <li>Select the connection type, design type, and powder coating option</li>
+          <li>Click <strong>🔧 Calculate</strong> to view estimated fabrication time</li>
+          <li>Special notices will appear if circle welds or powder coat limits apply</li>
+        </ul>
+      </div>
+    </div>
+
     <form id="trussForm">
       <div class="form-group">
         <label for="size">Truss Size:</label>
-        <input type="text" id="size" placeholder="e.g. 12x12x138&quot; circle 8 sections" required>
+        <input type="text" id="size" placeholder='e.g. 12x12x138" circle 8 sections' required>
       </div>
 
       <div class="form-group">
@@ -53,6 +68,13 @@
   <footer>
     <p>© Tyler Truss Systems</p>
   </footer>
+
+  <script>
+    function toggleInstructions() {
+      const inst = document.getElementById("instructions");
+      inst.style.display = inst.style.display === "none" ? "block" : "none";
+    }
+  </script>
 
   <script src="logic.js"></script>
 </body>
