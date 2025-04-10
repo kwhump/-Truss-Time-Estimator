@@ -7,8 +7,7 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
   const powder = document.getElementById("powder").value;
 
   const output = document.getElementById("output");
-  output.innerHTML = calculateTrussTime(sizeInput, connection, design, powder);
-
+  output.textContent = calculateTrussTime(sizeInput, connection, design, powder);
 });
 
 function calculateTrussTime(sizeInput, connection, design, powder) {
@@ -130,9 +129,8 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
   return (
     `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
     (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
-   (powderWarning ? `<div class="notice warning-icon">${powderWarning}</div>\n` : "") +
-(circlePowderNotice ? `<div class="notice warning-icon">${circlePowderNotice}</div>\n` : "") +
-
+   (powderWarning ? `${powderWarning}\n\n` : "") +
+(circlePowderNotice ? `${circlePowderNotice}\n\n` : "") +
     `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
     (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
     `Finalize Time: ${finalizeTime} min\n` +
