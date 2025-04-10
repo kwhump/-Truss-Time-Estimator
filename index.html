@@ -59,6 +59,7 @@
       </div>
 
       <button type="submit">🔧 Calculate</button>
+      <button type="button" onclick="clearForm()" style="margin-left: 1rem;">🧹 Clear</button>
     </form>
 
     <pre id="output"></pre>
@@ -73,6 +74,11 @@
     function toggleInstructions() {
       const inst = document.getElementById("instructions");
       inst.style.display = inst.style.display === "none" ? "block" : "none";
+    }
+
+    function clearForm() {
+      document.getElementById("trussForm").reset();
+      document.getElementById("output").textContent = "";
     }
   </script>
 
