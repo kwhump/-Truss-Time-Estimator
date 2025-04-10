@@ -11,7 +11,7 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
 });
 
 function calculateTrussTime(sizeInput, connection, design, powder) {
-    const isCircle = sizeInput.includes("circle");
+  const isCircle = sizeInput.includes("circle");
 
   // Grab the number after the last 'x' (e.g., 12x12x138 → 138)
   let sizeMatch = sizeInput.toLowerCase().split("circle")[0]; // trim anything after "circle"
@@ -22,7 +22,6 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
   }
 
   const inputSize = parseInt(lastPart[0]);
-
 
   const minutes = {
     144: { box: 84, back: 75, gusset: 110, ladder: 40, backLadder: 27, powder: 0, weight: 0 },
@@ -93,11 +92,24 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
 
   let powderTime = 0;
   let powderWeight = 0;
+  let powderWarning = "";
+  let circlePowderNotice = "";
+
+  const canPowderCoat = inputSize <= 120;
+
   if (powder === "yes") {
-    powderTime = data.powder;
-    powderWeight = data.weight;
-    notes.push(`Powder Coating Time: ${powderTime} min`);
-    notes.push(`Powder Weight: ${powderWeight} lbs`);
+    if (!canPowderCoat) {
+      powderWarning = `**NOTICE:** Truss exceeds maximum size (120") for in-house powder coating. Powder coating not applied.`;
+    } else {
+      powderTime = data.powder;
+      powderWeight = data.weight;
+      notes.push(`Powder Coating Time: ${powderTime} min`);
+      notes.push(`Powder Weight: ${powderWeight} lbs`);
+    }
+
+    if (isCircle) {
+      circlePowderNotice = `**NOTICE:** Powder coating circle trusses may require outsourcing depending on radius.`;
+    }
   }
 
   const finalizeTime = 12.5;
@@ -114,13 +126,18 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
 
   const total = fabricationTime + forkendTime + finalizeTime + powderTime + circleTime;
 
-  return `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
-         (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
-         `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
-         (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
-         `Finalize Time: ${finalizeTime} min\n` +
-         (circleTime ? `Circle Extras: ${circleTime} min\n` : "") +
-         (powderTime ? `Powder Coating Time: ${powderTime} min\n` : "") +
-         (powderWeight ? `Powder Weight: ${powderWeight} lbs\n` : "") +
-         `\nTotal Time: ${total.toFixed(2)} min\n\nDetails:\n` + notes.join("\n");
+  return (
+    `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
+    (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
+    (powderWarning ? powderWarning + "\n\n" : "") +
+    (circlePowderNotice ? circlePowderNotice + "\n\n" : "") +
+    `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
+    (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
+    `Finalize Time: ${finalizeTime} min\n` +
+    (circleTime ? `Circle Extras: ${circleTime} min\n` : "") +
+    (powderTime ? `Powder Coating Time: ${powderTime} min\n` : "") +
+    (powderWeight ? `Powder Weight: ${powderWeight} lbs\n` : "") +
+    `\nTotal Time: ${total.toFixed(2)} min\n\nDetails:\n` +
+    notes.join("\n")
+  );
 }
