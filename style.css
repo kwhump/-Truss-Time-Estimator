@@ -119,3 +119,19 @@ footer {
   margin-top: 2rem;
   color: #888;
 }
+form button[type="submit"],
+form button[type="button"] {
+  padding: 0.75rem 1.5rem;
+  background: #00549f;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  margin-top: 0.5rem;
+}
+
+form button[type="button"]:hover {
+  background: #003f7d;
+}
