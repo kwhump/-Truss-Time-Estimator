@@ -7,7 +7,8 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
   const powder = document.getElementById("powder").value;
 
   const output = document.getElementById("output");
-  output.textContent = calculateTrussTime(sizeInput, connection, design, powder);
+  output.innerHTML = calculateTrussTime(sizeInput, connection, design, powder);
+
 });
 
 function calculateTrussTime(sizeInput, connection, design, powder) {
