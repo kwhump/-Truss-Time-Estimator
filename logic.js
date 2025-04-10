@@ -13,10 +13,9 @@ document.getElementById("trussForm").addEventListener("submit", function (e) {
 function calculateTrussTime(sizeInput, connection, design, powder) {
   const isCircle = sizeInput.includes("circle");
 
-  // Grab the number after the last 'x' (e.g., 12x12x138 → 138)
   let sizeMatch = sizeInput.toLowerCase().split("circle")[0]; // trim anything after "circle"
   const xParts = sizeMatch.split("x");
-  const lastPart = xParts[xParts.length - 1].match(/\d+/); // get the number from last part
+  const lastPart = xParts[xParts.length - 1].match(/\d+/);
   if (!lastPart) {
     return `❌ Could not find a valid size in: "${sizeInput}"`;
   }
@@ -129,8 +128,8 @@ function calculateTrussTime(sizeInput, connection, design, powder) {
   return (
     `Estimated size used: ${inputSize}" (between ${lower}" and ${upper}")\n` +
     (isCircle ? `Circle Truss: YES\n\n` : `\n`) +
-   (powderWarning ? `${powderWarning}\n\n` : "") +
-(circlePowderNotice ? `${circlePowderNotice}\n\n` : "") +
+    (powderWarning ? `${powderWarning}\n\n` : "") +
+    (circlePowderNotice ? `${circlePowderNotice}\n\n` : "") +
     `Fabrication Time: ${fabricationTime.toFixed(2)} min\n` +
     (forkendTime ? `Forkend Drilling Time: ${forkendTime} min\n` : "") +
     `Finalize Time: ${finalizeTime} min\n` +
